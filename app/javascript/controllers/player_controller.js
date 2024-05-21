@@ -10,14 +10,17 @@ export default class extends Controller {
 
   audioContext = new AudioContext()
 
-  connect() {
-    console.log("Player controller connected.");
+  initialize() {
+    console.log("Player controller initialized.");
+
+    this.createEqualizer();
 
     document.addEventListener("turbo:load", (event) => {
       this.updateBtnState();
     });
+  }
 
-    this.createEqualizer();
+  connect() {
   }
 
   updateBtnState() {
