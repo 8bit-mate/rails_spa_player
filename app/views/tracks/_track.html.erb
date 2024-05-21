@@ -1,0 +1,25 @@
+<div id="<%= dom_id track %>">
+  <p>
+    <strong>Title:</strong>
+    <%= track.title %>
+  </p>
+
+  <% if track.audio.attached? %>
+    <p>
+      <strong>Blob key:</strong>
+      <%= track.audio.blob.key %>
+    </p>
+
+    <div>
+      <%= content_tag "button",
+        "Play",
+        id: track.audio.blob.key,
+        data: {
+          "action": "click->track-selector#controlPlayback",
+          "track-selector-target": "button",
+          "track-key": track.audio.blob.key,
+          "title": track.title
+        } %>
+    </div>
+  <% end%>
+</div>

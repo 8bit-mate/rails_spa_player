@@ -1,0 +1,11 @@
+<%= turbo_frame_tag "content", data: { turbo_action: "advance" } do %>
+  <h1>New track</h1>
+
+  <%= render "form", track: @track %>
+
+  <br>
+
+  <div>
+    <%= link_to "Back to tracks", tracks_path %>
+  </div>
+<% end %>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SpaPlayer</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= turbo_frame_tag "player", data: { turbo_permanent: true, controller: "player", action: "track-selector:select@window->player#activate" } do %>
+      <div>
+        <span><b>Title: </b></span>
+        <span data-player-target="title"></span>
+      </div>
+
+      <div>
+        <audio id="audioElement" type="audio/mp3"></audio>
+
+        <div data-player-target="waveForm"></div>
+        <div data-player-target="eq"></div>
+      </div>
+    <% end %>
+
+    <div data-controller="track-selector" data-action="track-selector:select->player#activate">
+      <%= yield %>
+    </div>
+  </body>
+</html>
