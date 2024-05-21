@@ -11,6 +11,8 @@
   </head>
 
   <body>
+    <%= render "application/navbar" %>
+  
     <%= turbo_frame_tag "player", data: { turbo_permanent: true, controller: "player", action: "track-selector:select@window->player#activate" } do %>
       <div>
         <span><b>Title: </b></span>

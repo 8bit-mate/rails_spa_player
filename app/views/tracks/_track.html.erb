@@ -14,6 +14,7 @@
       <%= content_tag "button",
         "Play",
         id: track.audio.blob.key,
+        class: "btn btn-outline-primary",
         data: {
           "action": "click->track-selector#controlPlayback",
           "track-selector-target": "button",
