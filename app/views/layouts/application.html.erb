@@ -13,7 +13,7 @@
   <body>
     <%= render "application/navbar" %>
 
-    <div data-controller="track-selector" data-action="track-selector:select->player#activate">
+    <div class="content" data-controller="track-selector" data-action="track-selector:select->player#activate">
       <%= yield %>
     </div>
 

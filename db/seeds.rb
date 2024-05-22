@@ -1,9 +1,9 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+track_one = Track.new(title: "Rockabilly Rules O.K.!")
+track_one.audio.attach(io: File.open(Pathname(__dir__).join("../storage/seeds/rockabilly_rules.mp3")),
+                       filename: "rockabilly_rules.mp3")
+track_one.save
+
+track_one = Track.new(title: "Skate & Create")
+track_one.audio.attach(io: File.open(Pathname(__dir__).join("../storage/seeds/skate_and_create.mp3")),
+                       filename: "skate_and_create.mp3")
+track_one.save

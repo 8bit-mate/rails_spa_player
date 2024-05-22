@@ -7,7 +7,7 @@ export default class extends Controller {
 
   trackKey = null;
   audio = document.getElementById("audioElement");
-  audioContext = new AudioContext()
+  audioContext = new AudioContext();
 
   initialize() {
     console.log("Player controller initialized.");
@@ -22,6 +22,7 @@ export default class extends Controller {
   }
 
   connect() {
+    console.log("Player controller connected.");
   }
 
   updateBtnState() {
@@ -108,52 +109,49 @@ export default class extends Controller {
   }
 
   createEqualizer() {
-    // Define the equalizer bands
-    const eqBands = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
+    // Define the equalizer bands (Hz)
+    const eqBands = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
 
-    // Create a biquad filter for each band
     const filters = eqBands.map((band) => {
-      const filter = this.audioContext.createBiquadFilter()
-      filter.type = band <= 32 ? "lowshelf" : band >= 16000 ? "highshelf" : "peaking"
-      filter.gain.value = 0
-      filter.Q.value = 1 // resonance
-      filter.frequency.value = band // the cut-off frequency
-      return filter
+      const filter = this.audioContext.createBiquadFilter();
+      filter.type = band <= 32 ? "lowshelf" : band >= 16000 ? "highshelf" : "peaking";
+      filter.gain.value = 0;
+      filter.Q.value = 1; // resonance
+      filter.frequency.value = band; // the cut-off frequency
+      return filter;
     })
 
-    const mediaNode = this.audioContext.createMediaElementSource(this.audio)
+    const mediaNode = this.audioContext.createMediaElementSource(this.audio);
 
     // Connect the filters and media node sequentially
     const equalizer = filters.reduce((prev, curr) => {
-      prev.connect(curr)
-      return curr
-    }, mediaNode)
+      prev.connect(curr);
+      return curr;
+    }, mediaNode);
 
     // Connect the filters to the audio output
-    equalizer.connect(this.audioContext.destination)
+    equalizer.connect(this.audioContext.destination);
 
-    this.createFiltersSliders(filters)
-  }
-
-  createFiltersSliders(filters) {
-    this.eqTarget.innerHTML = ""
+    this.eqTarget.innerHTML = "";
 
     filters.forEach((filter) => {
-      const slider = document.createElement("input")
-      slider.type = "range"
-      // slider.orient = "vertical"
-      // slider.style.appearance = "slider-vertical"
-      slider.style.width = "25em"
-      slider.min = -15
-      slider.max = 15
-      slider.value = filter.gain.value
-      slider.step = 0.1
-      slider.oninput = (e) => (filter.gain.value = e.target.value)
-      this.eqTarget.appendChild(slider)
-
-      const label = document.createElement("span")
-      label.innerText = `${filter.frequency.value} Hz`
-      this.eqTarget.appendChild(label)
+      this.createFilterSlider(filter);
     })
+  }
+
+  createFilterSlider(filter) {
+    const slider = document.createElement("input");
+    slider.type = "range";
+    slider.style.width = "25em";
+    slider.min = -15;
+    slider.max = 15;
+    slider.value = filter.gain.value;
+    slider.step = 0.1;
+    slider.oninput = (e) => (filter.gain.value = e.target.value);
+    this.eqTarget.appendChild(slider);
+
+    const label = document.createElement("span");
+    label.innerText = `${filter.frequency.value} Hz`;
+    this.eqTarget.appendChild(label);
   }
 }
