@@ -1,0 +1,35 @@
+<%= turbo_frame_tag "player", data: { turbo_permanent: true, controller: "player", action: "track-selector:select@window->player#activate" } do %>
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasRightLabel">Equalizer</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div data-player-target="eq"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="player-element" id="title-container">
+        <span data-player-target="title"></span>
+      </div>
+
+      <div class="player-element" id="button">
+        <button class="btn btn-outline-primary" type="button" data-player-target="button" data-action="click->player#handleSameTrack" disabled>Play</button>
+      </div>
+
+      <div class="player-element" id="wave-form-container" data-player-target="waveForm"></div>
+
+      <div class="player-element" id="eq-btn-container">
+        <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Equalizer</button>
+      </div>
+
+      <div class="player-element" id="audio-container">
+        <audio id="audioElement" type="audio/mp3"></audio>
+      </div>
+    </div>
+  </footer>
+<% end %>
+

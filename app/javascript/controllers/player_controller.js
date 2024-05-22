@@ -3,11 +3,10 @@ import { Controller } from "@hotwired/stimulus"
 import WaveSurfer from "wavesurfer"
 
 export default class extends Controller {
-  static targets = [ "title", "waveForm", "eq" ];
+  static targets = [ "title", "waveForm", "eq", "button" ];
+
   trackKey = null;
-
   audio = document.getElementById("audioElement");
-
   audioContext = new AudioContext()
 
   initialize() {
@@ -18,27 +17,38 @@ export default class extends Controller {
     document.addEventListener("turbo:load", (event) => {
       this.updateBtnState();
     });
+
+    this.buttonTarget.disabled = true;
   }
 
   connect() {
   }
 
   updateBtnState() {
-    let btn = document.getElementById(this.trackKey);
-
-    if (btn) {
-      if (this.audio.paused) {
-        btn.innerText = "Play";
-      } else {
-        btn.innerText = "Pause";
-      }
+    if (this.audio.paused) {
+      this.setBtnPause();
+    } else {
+      this.setBtnPlay();
     }
   }
+
+  setBtnPause() {
+    let btn = document.getElementById(this.trackKey);
+    if (btn) { btn.innerText = "Play" };
+    this.buttonTarget.innerText = "Play";
+  }
+
+  setBtnPlay() {
+    let btn = document.getElementById(this.trackKey);
+    if (btn) { btn.innerText = "Pause" };
+    this.buttonTarget.innerText = "Pause";
+  } 
 
   activate(event) {
     let target = event.detail.target;
     let trackKey = target.dataset.trackKey;
     this.titleTarget.innerText = target.dataset.title;
+    this.buttonTarget.disabled = false;
 
     if (this.trackKey == trackKey) {
       this.handleSameTrack(event);
@@ -56,11 +66,7 @@ export default class extends Controller {
   }
 
   handleNewTrack(trackKey) {
-    let btn = document.getElementById(this.trackKey);
-
-    if (btn) {
-      btn.innerText = "Play";
-    }
+    this.setBtnPause();
 
     this.trackKey = trackKey;
 
@@ -76,15 +82,15 @@ export default class extends Controller {
     .catch(console.error);
 
     this.audio.addEventListener("ended", (event) => {
-      this.updateBtnState();
+      this.setBtnPause();
     });
 
     this.audio.addEventListener("play", (event) => {
-      this.updateBtnState();
+      this.setBtnPlay();
     });
 
     this.audio.addEventListener("pause", (event) => {
-      this.updateBtnState();
+      this.setBtnPause();
     });
 
     this.audio.addEventListener("canplay", (event) => {
@@ -94,6 +100,7 @@ export default class extends Controller {
         container: this.waveFormTarget,
         waveColor: "rgb(200, 0, 200)",
         progressColor: "rgb(100, 0, 100)",
+        height: "60",
         media: this.audio,
       })
   

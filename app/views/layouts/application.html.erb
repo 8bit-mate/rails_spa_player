@@ -17,22 +17,6 @@
       <%= yield %>
     </div>
 
-    <footer class="footer">
-      <div class="container">
-        <%= turbo_frame_tag "player", data: { turbo_permanent: true, controller: "player", action: "track-selector:select@window->player#activate" } do %>
-          <div>
-            <span><b>Title: </b></span>
-            <span data-player-target="title"></span>
-          </div>
-
-          <div>
-            <audio id="audioElement" type="audio/mp3"></audio>
-
-            <div data-player-target="waveForm"></div>
-            <div data-player-target="eq"></div>
-          </div>
-        <% end %>
-      </div>
-    </footer>
+    <%= render "application/player" %>
   </body>
 </html>
